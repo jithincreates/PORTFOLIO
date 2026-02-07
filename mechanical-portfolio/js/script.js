@@ -51,4 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
         el.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-10');
         observer.observe(el);
     });
+    // Horizontal Scroll Buttons
+    const projectsContainer = document.getElementById('projects-container');
+    const scrollLeftBtn = document.getElementById('scroll-left');
+    const scrollRightBtn = document.getElementById('scroll-right');
+
+    if (projectsContainer && scrollLeftBtn && scrollRightBtn) {
+        scrollLeftBtn.addEventListener('click', () => {
+            projectsContainer.scrollBy({ left: -420, behavior: 'smooth' });
+        });
+
+        scrollRightBtn.addEventListener('click', () => {
+            projectsContainer.scrollBy({ left: 420, behavior: 'smooth' });
+        });
+    }
 });
