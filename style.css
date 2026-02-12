@@ -372,6 +372,18 @@ section {
     text-transform: uppercase;
 }
 
+.carousel-instruction {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    color: var(--text-color);
+    opacity: 0.4;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: -1rem;
+    /* Adjusting gap from flex container */
+    pointer-events: none;
+}
+
 /* Skills */
 /* Skills */
 .skills-section {

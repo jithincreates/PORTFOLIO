@@ -42,8 +42,10 @@ const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const projectTitle = document.getElementById('projectTitle');
 const projectCategory = document.getElementById('projectCategory');
+const carouselContainer = document.querySelector('.carousel-container');
 
 let activeIndex = 0;
+let autoScrollInterval;
 
 function initCarousel() {
     if (!track) return;
@@ -63,6 +65,7 @@ function initCarousel() {
                 window.location.href = `project.html?id=${index}`;
             } else {
                 updateCarousel(index);
+                resetAutoScroll();
             }
         });
 
@@ -165,8 +168,36 @@ function updateInfo() {
     }, 300);
 }
 
-prevBtn.addEventListener('click', () => updateCarousel(activeIndex - 1));
-nextBtn.addEventListener('click', () => updateCarousel(activeIndex + 1));
+function startAutoScroll() {
+    autoScrollInterval = setInterval(() => {
+        updateCarousel(activeIndex + 1);
+    }, 3000);
+}
+
+function resetAutoScroll() {
+    clearInterval(autoScrollInterval);
+    startAutoScroll();
+}
+
+prevBtn.addEventListener('click', () => {
+    updateCarousel(activeIndex - 1);
+    resetAutoScroll();
+});
+
+nextBtn.addEventListener('click', () => {
+    updateCarousel(activeIndex + 1);
+    resetAutoScroll();
+});
+
+if (carouselContainer) {
+    carouselContainer.addEventListener('mouseenter', () => {
+        clearInterval(autoScrollInterval);
+    });
+
+    carouselContainer.addEventListener('mouseleave', () => {
+        startAutoScroll();
+    });
+}
 window.addEventListener('resize', centerActiveItem);
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -180,6 +211,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initCarousel();
+    startAutoScroll();
+
     // Use a timeout to ensure layout is done before centering
     setTimeout(centerActiveItem, 100);
 
