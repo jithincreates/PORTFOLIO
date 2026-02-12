@@ -564,41 +564,44 @@ footer {
 
 @media (max-width: 480px) {
     .hero-content {
-        max-width: 95%;
+        max-width: 85%;
     }
 
     .hero-name {
-        font-size: 3.5rem;
+        font-size: 2.8rem;
+        letter-spacing: -1px;
     }
 
     .hero-description {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     .carousel-container {
-        height: 50vh;
+        height: 48vh;
     }
 
     .carousel-item {
-        min-width: 200px;
-        height: 280px;
+        min-width: 170px;
+        height: 240px;
     }
 
     .nav-btn {
-        width: 38px;
-        height: 38px;
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
     }
 
     .project-info h3 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
     }
 
     .skill-list li {
-        font-size: 0.85rem;
-        padding: 0.5rem 1.2rem;
+        font-size: 0.8rem;
+        padding: 0.4rem 1rem;
     }
 
     .software-logo {
-        height: 15px;
+        height: 14px;
     }
 }
