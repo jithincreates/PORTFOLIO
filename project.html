@@ -89,10 +89,75 @@
             color: var(--highlight-color);
         }
 
+        @media (max-width: 1024px) {
+            .detail-container {
+                gap: 3rem;
+            }
+
+            .detail-title {
+                font-size: 3rem;
+            }
+        }
+
         @media (max-width: 768px) {
+            .project-detail-section {
+                padding-top: 100px;
+            }
+
             .detail-container {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 2.5rem;
+                width: 85%;
+            }
+
+            .detail-title {
+                font-size: 2.5rem;
+            }
+
+            .detail-description {
+                font-size: 1rem;
+            }
+
+            .masonry-grid {
+                grid-auto-rows: 200px;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .detail-title {
+                font-size: 2rem;
+            }
+
+            .detail-category {
+                font-size: 1rem;
+                letter-spacing: 2px;
+            }
+
+            .masonry-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: auto;
+            }
+
+            .gallery-item:nth-child(n) {
+                grid-column: span 1 !important;
+                grid-row: span 1 !important;
+            }
+
+            .gallery-item {
+                aspect-ratio: 4/3;
+            }
+
+            .back-btn {
+                font-size: 0.8rem;
+            }
+
+            .prev,
+            .next {
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+                padding: 10px;
             }
         }
 
@@ -300,6 +365,66 @@
         .next:hover {
             background-color: rgba(255, 255, 255, 0.2);
         }
+
+        .tech-section {
+            width: 90%;
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            line-height: 2;
+        }
+
+        .feature-list li {
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-list strong {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.05rem;
+        }
+
+        .feature-list span {
+            opacity: 0.7;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .tech-section {
+                padding: 1.5rem;
+                width: 95%;
+            }
+
+            .feature-box {
+                padding: 1.5rem;
+            }
+        }
     </style>
 </head>
 
@@ -337,9 +462,8 @@
             </div>
         </div>
         <!-- GoKart Technical Description Section -->
-        <div id="gokartTechnicalDescription"
-            style="display: none; width: 90%; max-width: 1400px; margin: 2rem auto; padding: 2rem; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;">
-            <p style="font-size: 1.1rem; line-height: 1.8; opacity: 0.9; font-weight: 300; margin: 0;">
+        <div id="gokartTechnicalDescription" class="tech-section" style="display: none;">
+            <p class="detail-description" style="margin: 0;">
                 This two-month comprehensive restoration involved a complete teardown to the chassis for structural
                 evaluation and component overhaul. I engineered and fabricated several bespoke components, including the
                 steering assembly, pedal interface, engine mounts, and a custom brake caliper bracket. To ensure
@@ -371,75 +495,68 @@
     </div>
 
     <!-- Adventure Scooter Features Section -->
-    <div id="adventureScooterFeatures" style="display: none; margin-top: 4rem; padding: 0 5%;">
+    <div id="adventureScooterFeatures" class="tech-section" style="display: none; margin-top: 4rem;">
         <h2
             style="font-family: var(--font-display); font-size: 2rem; text-align: center; margin-bottom: 3rem; letter-spacing: 3px;">
             TECHNICAL FEATURES</h2>
-        <div
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
-            <div
-                style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2rem;">
-                <ul style="list-style: none; padding: 0; line-height: 2;">
-                    <li style="margin-bottom: 1.5rem;">
-                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Tall Windshield</strong><br>
-                        <span style="opacity: 0.7; font-size: 0.95rem;">Significantly reduces wind blast and debris for
+        <div class="features-grid">
+            <div class="feature-box">
+                <ul class="feature-list">
+                    <li>
+                        <strong>• Tall Windshield</strong><br>
+                        <span>Significantly reduces wind blast and debris for
                             the rider, improving comfort during longer rides or at higher speeds.</span>
                     </li>
-                    <li style="margin-bottom: 1.5rem;">
-                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Headlight Grill</strong><br>
-                        <span style="opacity: 0.7; font-size: 0.95rem;">Provides physical protection for the glass lens
+                    <li>
+                        <strong>• Headlight Grill</strong><br>
+                        <span>Provides physical protection for the glass lens
                             against stones and road debris, especially on unpaved surfaces.</span>
                     </li>
                     <li>
-                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Yellow Headlight
-                            Tint</strong><br>
-                        <span style="opacity: 0.7; font-size: 0.95rem;">Improves visibility in fog, rain, or snow by
+                        <strong>• Yellow Headlight Tint</strong><br>
+                        <span>Improves visibility in fog, rain, or snow by
                             reducing blue light reflection and glare, which helps define road textures better in poor
                             conditions.</span>
                     </li>
                 </ul>
             </div>
-            <div
-                style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2rem;">
-                <ul style="list-style: none; padding: 0; line-height: 2;">
-                    <li style="margin-bottom: 1.5rem;">
-                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Fog Lamps</strong><br>
-                        <span style="opacity: 0.7; font-size: 0.95rem;">These provide low, wide-angle illumination that
+            <div class="feature-box">
+                <ul class="feature-list">
+                    <li>
+                        <strong>• Fog Lamps</strong><br>
+                        <span>These provide low, wide-angle illumination that
                             cuts under mist and rain, significantly increasing the rider's field of vision in
                             low-visibility conditions.</span>
                     </li>
-                    <li style="margin-bottom: 1.5rem;">
-                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Jerry Can</strong><br>
-                        <span style="opacity: 0.7; font-size: 0.95rem;">This offers a critical reserve of fuel,
+                    <li>
+                        <strong>• Jerry Can</strong><br>
+                        <span>This offers a critical reserve of fuel,
                             extending the scooter's range for long-distance travel where gas stations may be
                             infrequent.</span>
                     </li>
                     <li>
-                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Mount/Holder</strong><br>
-                        <span style="opacity: 0.7; font-size: 0.95rem;">This ensures the heavy fuel container is
+                        <strong>• Mount/Holder</strong><br>
+                        <span>This ensures the heavy fuel container is
                             securely fastened to the frame, preventing shifts in weight that could affect the scooter's
                             balance and handling.</span>
                     </li>
                 </ul>
             </div>
-            <div
-                style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2rem;">
-                <ul style="list-style: none; padding: 0; line-height: 2;">
-                    <li style="margin-bottom: 1.5rem;">
-                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Rear Luggage
-                            Platform</strong><br>
-                        <span style="opacity: 0.7; font-size: 0.95rem;">Provides a stable, dedicated surface for
+            <div class="feature-box">
+                <ul class="feature-list">
+                    <li>
+                        <strong>• Rear Luggage Platform</strong><br>
+                        <span>Provides a stable, dedicated surface for
                             securing bulky gear necessary for self-sustained travel.</span>
                     </li>
-                    <li style="margin-bottom: 1.5rem;">
-                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Exoskeleton Crash
-                            Guards</strong><br>
-                        <span style="opacity: 0.7; font-size: 0.95rem;">Protects the primary bodywork by absorbing
+                    <li>
+                        <strong>• Exoskeleton Crash Guards</strong><br>
+                        <span>Protects the primary bodywork by absorbing
                             impacts from low-speed drops or scrapes, preventing structural damage.</span>
                     </li>
                     <li>
-                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Bash Plate</strong><br>
-                        <span style="opacity: 0.7; font-size: 0.95rem;">Although there is no engine in the front like a
+                        <strong>• Bash Plate</strong><br>
+                        <span>Although there is no engine in the front like a
                             motorcycle, there is a high chance of direct impact from rocks while off-roading. Hence, a
                             bash plate is mounted in the bottom front of the scooter.</span>
                     </li>
