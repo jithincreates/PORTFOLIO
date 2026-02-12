@@ -538,10 +538,20 @@ footer {
         height: 340px;
     }
 
+    .carousel-item.active .project-card img {
+        transform: none;
+        /* Disable scaling on mobile to prevent zoom feel */
+    }
+
     .nav-btn {
         width: 45px;
         height: 45px;
         font-size: 1.2rem;
+    }
+
+    .project-info {
+        height: 100px;
+        /* Reduced fixed height for mobile stability */
     }
 
     .project-info h3 {
@@ -583,12 +593,37 @@ footer {
     .carousel-item {
         min-width: 170px;
         height: 240px;
+        background: #000;
+        /* Solid background for contain */
+    }
+
+    .project-card img {
+        object-fit: contain;
+        /* Show the whole image content */
+        opacity: 0.6;
+    }
+
+    .carousel-item.active .project-card img {
+        opacity: 1;
+        transform: none;
+    }
+
+    .carousel-nav {
+        gap: 1rem;
+        height: 80px;
+        /* Rigid container to prevent arrow shifting */
     }
 
     .nav-btn {
         width: 35px;
         height: 35px;
         font-size: 1rem;
+    }
+
+    .project-info {
+        height: 80px;
+        flex: 1;
+        /* Allow info to take space between buttons */
     }
 
     .project-info h3 {
