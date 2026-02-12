@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jithin Prasanth | Mechanical Design Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Syncopate:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="fixed-nav">
+        <!-- "Contacts" and "Hire Me" will be at the bottom or separate, let's stick to user request: Home, Works, Contacts, Hire Me -->
+        <!-- Wait, user asked for: Home, Works, Contacts, Hire Me in top left -->
+        <div class="nav-links-left">
+            <a href="#home" class="nav-item">Home</a>
+            <a href="#works" class="nav-item">Works</a>
+
+            <a href="contact.html" class="nav-item highlight">Hire Me</a>
+        </div>
+    </nav>
+
+    <section id="home" class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-name">JITHIN <br> PRASANTH</h1>
+            <h2 class="hero-title">Mechanical Design Engineer</h2>
+            <p class="hero-description">Mechanical Engineer who loves to bring ideas to life, I specialize in intricate
+                design, industrial layouts, and high-end renders that demand both technical accuracy and creative flair.
+                I combine expert-level CAD mastery with practical fabrication experience, demonstrated through a body of
+                digital work and a featured mechanical restoration project from the past two years. My approach ensures
+                that every digital assembly is grounded in real-world manufacturability and mechanical integrity.</p>
+            <a href="#works" class="cta-button">Explore my works</a>
+        </div>
+    </section>
+
+    <!-- Project Carousel Section -->
+    <section id="works" class="projects-section fade-in-section">
+        <div class="carousel-container">
+            <!-- Dynamic Content via JS -->
+            <div class="carousel-track" id="projectTrack">
+                <!-- Projects will be injected here -->
+            </div>
+
+            <div class="carousel-nav">
+                <button class="nav-btn prev-btn" id="prevBtn">&larr;</button>
+                <div class="project-info" id="activeProjectInfo">
+                    <h3 id="projectTitle">Project Name</h3>
+                    <p id="projectCategory">Category</p>
+                </div>
+                <button class="nav-btn next-btn" id="nextBtn">&rarr;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills-section fade-in-section">
+        <h2 class="section-title">Expertise</h2>
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h3>Software Proficiency</h3>
+                <ul class="skill-list" id="softwareSkills">
+                    <li><img src="assets/solidworks.png" alt="SolidWorks" class="software-logo">SolidWorks</li>
+                    <li><img src="assets/autocad.png" alt="AutoCAD" class="software-logo">AutoCAD</li>
+                    <li><img src="assets/Inventor.png" alt="Inventor" class="software-logo">Inventor</li>
+                    <li><img src="assets/catia.png" alt="CATIA" class="software-logo">CATIA</li>
+                    <li><img src="assets/Ansys.png" alt="Ansys" class="software-logo">Ansys Workbench</li>
+                    <li><img src="assets/Ansys.png" alt="Ansys" class="software-logo">Ansys Fluent</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h3>Core Competencies</h3>
+                <ul class="skill-list" id="coreSkills">
+                    <li>GD&T</li>
+                    <li>Design for Manufacturing (DFM)</li>
+                    <li>Design for Assembly (DFA)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <!-- Footer/Contact -->
+    <footer id="contact">
+        <p>&copy; 2024 Jithin Prasanth. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="animations.js"></script>
+</body>
+
+</html>

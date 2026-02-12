@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Jithin Prasanth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Syncopate:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .contact-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem 2rem 2rem;
+        }
+
+        .contact-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .contact-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+        }
+
+        .contact-subtitle {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            opacity: 0.7;
+            line-height: 1.6;
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            color: #ffffff;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-submit:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .form-submit:active {
+            transform: translateY(0);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            text-align: center;
+            width: 100%;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .back-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="fixed-nav">
+        <a href="index.html" style="font-family: var(--font-display); font-weight: 700;">JP</a>
+        <div class="nav-links-left">
+            <a href="index.html" class="nav-item">Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="contact-container">
+            <div class="contact-header">
+                <h1 class="contact-title">LET'S CONNECT</h1>
+                <p class="contact-subtitle">Interested in working together? Fill out the form below and I'll get back to
+                    you as soon as possible.</p>
+            </div>
+
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label for="name" class="form-label">Your Name</label>
+                    <input type="text" id="name" name="name" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject" class="form-label">Subject</label>
+                    <input type="text" id="subject" name="subject" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea id="message" name="message" class="form-textarea" required></textarea>
+                </div>
+
+                <button type="submit" class="form-submit">Send Message</button>
+            </form>
+
+            <a href="index.html" class="back-link">&larr; Back to Portfolio</a>
+        </div>
+    </section>
+
+    <script>
+        // Form submission handler
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value,
+                message: document.getElementById('message').value
+            };
+
+            // Create mailto link with form data
+            const mailtoLink = `mailto:your-email@example.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+
+            // Open mailto link
+            window.location.href = mailtoLink;
+
+            // Reset form
+            this.reset();
+        });
+    </script>
+
+    <script src="animations.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details | Jithin Prasanth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Syncopate:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific styles for the detail page */
+        .project-detail-section {
+            padding-top: 120px;
+            /* Space for fixed nav */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .detail-container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .detail-image-container {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+        }
+
+        .detail-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .detail-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .detail-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.1;
+            color: var(--text-color);
+        }
+
+        .detail-category {
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--highlight-color);
+            opacity: 0.7;
+            font-size: 1.2rem;
+        }
+
+        .detail-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .back-btn {
+            margin-top: 3rem;
+            display: inline-block;
+            font-family: var(--font-body);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid var(--highlight-color);
+            padding-bottom: 5px;
+        }
+
+        .back-btn:hover {
+            color: var(--highlight-color);
+        }
+
+        @media (max-width: 768px) {
+            .detail-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        /* Gallery Styles */
+        .gallery-container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-bottom: 4rem;
+        }
+
+        .masonry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-auto-rows: 250px;
+            /* Fixed row height base */
+            gap: 20px;
+            margin-top: 2rem;
+            grid-auto-flow: dense;
+            /* Fill gaps */
+        }
+
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+        }
+
+        /* Asymmetrical Pattern */
+        .gallery-item:nth-child(1) {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .gallery-item:nth-child(2) {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .gallery-item:nth-child(3) {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+
+        .gallery-item:nth-child(4) {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .gallery-item:nth-child(5) {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .gallery-item:nth-child(8) {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .gallery-item:nth-child(9) {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+            /* Subtle zoom instead of lift */
+            border-color: var(--highlight-color);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            z-index: 2;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item::after {
+            content: 'Full view';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.4);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            white-space: nowrap;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Lightbox Styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            padding-top: 60px;
+            /* Space for close btn */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox-content {
+            margin: auto;
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: 90%;
+            max-height: 80vh;
+            object-fit: contain;
+            animation-name: zoom;
+            animation-duration: 0.4s;
+            border-radius: 4px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: 300;
+            transition: 0.3s;
+            cursor: pointer;
+            z-index: 2001;
+            font-family: var(--font-body);
+        }
+
+        .close-btn:hover {
+            color: var(--highlight-color);
+            transform: rotate(90deg);
+        }
+
+        .prev,
+        .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 20px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 30px;
+            transition: 0.3s ease;
+            user-select: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .next {
+            right: 20px;
+        }
+
+        .prev {
+            left: 20px;
+        }
+
+        .prev:hover,
+        .next:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation (Simplified for subpage) -->
+    <nav class="fixed-nav">
+        <a href="index.html" style="font-family: var(--font-display); font-weight: 700;">JP</a>
+        <div class="nav-links-left">
+            <a href="index.html" class="nav-item">Back to Home</a>
+        </div>
+    </nav>
+
+    <section class="project-detail-section">
+        <div class="detail-container">
+            <div class="detail-image-container">
+                <img src="" alt="Project Image" id="detailImage" class="detail-image">
+            </div>
+            <div class="detail-content">
+                <div>
+                    <p class="detail-category" id="detailCategory">Category</p>
+                    <h1 class="detail-title" id="detailTitle">Project Title</h1>
+                </div>
+
+                <div class="project-description-container">
+                    <p class="detail-description" id="detailDescription">
+                        Detailed description of the project goes here. This section will elaborate on the design
+                        challenges,
+                        engineering solutions, and manufacturing processes involved in bringing this concept to reality.
+                        It demonstrates technical proficiency and creative problem-solving.
+                    </p>
+                </div>
+
+                <a href="index.html" class="back-btn">&larr; Back to Portfolio</a>
+            </div>
+        </div>
+        <!-- GoKart Technical Description Section -->
+        <div id="gokartTechnicalDescription"
+            style="display: none; width: 90%; max-width: 1400px; margin: 2rem auto; padding: 2rem; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px;">
+            <p style="font-size: 1.1rem; line-height: 1.8; opacity: 0.9; font-weight: 300; margin: 0;">
+                This two-month comprehensive restoration involved a complete teardown to the chassis for structural
+                evaluation and component overhaul. I engineered and fabricated several bespoke components, including the
+                steering assembly, pedal interface, engine mounts, and a custom brake caliper bracket. To ensure
+                structural integrity, I remediated chassis corrosion by stripping surface rust and reinforcing critical
+                weld points.
+                <br><br>
+                The mechanical system was optimized by correcting front-end toe-in alignment and integrating a
+                high-performance braking system adapted from a Bajaj Pulsar. The build was finalized with a protective
+                industrial coating to prevent future oxidation and is powered by a Briggs & Stratton 950 Series (208cc)
+                engine.
+            </p>
+        </div>
+
+        <!-- Dynamic Gallery Section -->
+        <div id="projectGallery" class="gallery-container" style="display: none;">
+            <h2 class="section-title" style="margin-top: 4rem;">Gallery</h2>
+            <div class="masonry-grid" id="masonryGrid">
+                <!-- Images injected here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <span class="close-btn" id="closeLightbox">&times;</span>
+        <img class="lightbox-content" id="lightboxImage">
+        <a class="prev" id="prevSlide">&#10094;</a>
+        <a class="next" id="nextSlide">&#10095;</a>
+    </div>
+
+    <!-- Adventure Scooter Features Section -->
+    <div id="adventureScooterFeatures" style="display: none; margin-top: 4rem; padding: 0 5%;">
+        <h2
+            style="font-family: var(--font-display); font-size: 2rem; text-align: center; margin-bottom: 3rem; letter-spacing: 3px;">
+            TECHNICAL FEATURES</h2>
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
+            <div
+                style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2rem;">
+                <ul style="list-style: none; padding: 0; line-height: 2;">
+                    <li style="margin-bottom: 1.5rem;">
+                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Tall Windshield</strong><br>
+                        <span style="opacity: 0.7; font-size: 0.95rem;">Significantly reduces wind blast and debris for
+                            the rider, improving comfort during longer rides or at higher speeds.</span>
+                    </li>
+                    <li style="margin-bottom: 1.5rem;">
+                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Headlight Grill</strong><br>
+                        <span style="opacity: 0.7; font-size: 0.95rem;">Provides physical protection for the glass lens
+                            against stones and road debris, especially on unpaved surfaces.</span>
+                    </li>
+                    <li>
+                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Yellow Headlight
+                            Tint</strong><br>
+                        <span style="opacity: 0.7; font-size: 0.95rem;">Improves visibility in fog, rain, or snow by
+                            reducing blue light reflection and glare, which helps define road textures better in poor
+                            conditions.</span>
+                    </li>
+                </ul>
+            </div>
+            <div
+                style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2rem;">
+                <ul style="list-style: none; padding: 0; line-height: 2;">
+                    <li style="margin-bottom: 1.5rem;">
+                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Fog Lamps</strong><br>
+                        <span style="opacity: 0.7; font-size: 0.95rem;">These provide low, wide-angle illumination that
+                            cuts under mist and rain, significantly increasing the rider's field of vision in
+                            low-visibility conditions.</span>
+                    </li>
+                    <li style="margin-bottom: 1.5rem;">
+                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Jerry Can</strong><br>
+                        <span style="opacity: 0.7; font-size: 0.95rem;">This offers a critical reserve of fuel,
+                            extending the scooter's range for long-distance travel where gas stations may be
+                            infrequent.</span>
+                    </li>
+                    <li>
+                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Mount/Holder</strong><br>
+                        <span style="opacity: 0.7; font-size: 0.95rem;">This ensures the heavy fuel container is
+                            securely fastened to the frame, preventing shifts in weight that could affect the scooter's
+                            balance and handling.</span>
+                    </li>
+                </ul>
+            </div>
+            <div
+                style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 2rem;">
+                <ul style="list-style: none; padding: 0; line-height: 2;">
+                    <li style="margin-bottom: 1.5rem;">
+                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Rear Luggage
+                            Platform</strong><br>
+                        <span style="opacity: 0.7; font-size: 0.95rem;">Provides a stable, dedicated surface for
+                            securing bulky gear necessary for self-sustained travel.</span>
+                    </li>
+                    <li style="margin-bottom: 1.5rem;">
+                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Exoskeleton Crash
+                            Guards</strong><br>
+                        <span style="opacity: 0.7; font-size: 0.95rem;">Protects the primary bodywork by absorbing
+                            impacts from low-speed drops or scrapes, preventing structural damage.</span>
+                    </li>
+                    <li>
+                        <strong style="color: rgba(255,255,255,0.9); font-size: 1.05rem;">• Bash Plate</strong><br>
+                        <span style="opacity: 0.7; font-size: 0.95rem;">Although there is no engine in the front like a
+                            motorcycle, there is a high chance of direct impact from rocks while off-roading. Hence, a
+                            bash plate is mounted in the bottom front of the scooter.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Re-using script.js but we need to run specific logic for this page -->
+    <script src="script.js"></script>
+    <script>
+        // Inline script to handle the loading of data
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = parseInt(urlParams.get('id'));
+
+            // Update all back links to include the project index
+            if (!isNaN(projectId)) {
+                // Find all links that point to the home page (exactly or with hash)
+                const backLinks = document.querySelectorAll('a[href="index.html"], a[href="./index.html"], a[href="index.html#home"], a[href="index.html#works"]');
+                backLinks.forEach(link => {
+                    const currentHref = link.getAttribute('href');
+                    if (currentHref.includes('#')) {
+                        const hash = currentHref.split('#')[1];
+                        link.href = `index.html?project=${projectId}#${hash}`;
+                    } else {
+                        link.href = `index.html?project=${projectId}`;
+                    }
+                });
+            }
+
+            if (!isNaN(projectId) && projectId >= 0 && projectId < projects.length) {
+                const project = projects[projectId];
+                document.getElementById('detailImage').src = project.image;
+                document.getElementById('detailImage').alt = project.title;
+                document.getElementById('detailTitle').textContent = project.title;
+                document.getElementById('detailCategory').textContent = project.category;
+
+                if (project.description) {
+                    document.getElementById('detailDescription').innerHTML = project.description;
+                }
+
+                // Vintage Scooter Specific Logic
+                if (project.title === "Vintage Scooter") {
+                    const gallery = document.getElementById('projectGallery');
+                    const grid = document.getElementById('masonryGrid');
+                    gallery.style.display = 'block';
+
+                    // Add subtitle below the Gallery heading
+                    const subtitle = document.createElement('p');
+                    subtitle.textContent = 'All the images are rendered using Keyshot.';
+                    subtitle.style.textAlign = 'center';
+                    subtitle.style.fontSize = '1.1rem';
+                    subtitle.style.opacity = '0.7';
+                    subtitle.style.marginTop = '-1rem';
+                    subtitle.style.marginBottom = '2rem';
+                    subtitle.style.fontStyle = 'italic';
+                    gallery.insertBefore(subtitle, grid);
+
+                    // List of specific images found in assets
+                    const scooterImages = [
+                        "Vintage Scooter (2).jpeg",
+                        "Vintage Scooter 1.jpeg",
+                        "Vintage Scooter 2.jpeg",
+                        "Vintage Scooter 3.jpeg",
+                        "Vintage Scooter 4.jpeg",
+                        "Vintage Scooter 5.jpeg",
+                        "Vintage Scooter 6.jpeg",
+                        "Vintage Scooter 7.jpeg",
+                        "Vintage Scooter 8.jpeg",
+                        "Vintage Scooter 9.jpeg",
+                        "Vintage Scooter 10.jpeg"
+                    ];
+
+                    // Store full paths for lightbox
+                    const lightboxImages = scooterImages.map(img => `assets/${img}`);
+                    let currentSlide = 0;
+
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightboxImage');
+                    const closeBtn = document.getElementById('closeLightbox');
+                    const prevBtn = document.getElementById('prevSlide');
+                    const nextBtn = document.getElementById('nextSlide');
+
+                    function openLightbox(index) {
+                        currentSlide = index;
+                        updateLightboxImage();
+                        lightbox.style.display = 'block';
+                        document.body.style.overflow = 'hidden'; // Disable scroll
+                    }
+
+                    function closeLightbox() {
+                        lightbox.style.display = 'none';
+                        document.body.style.overflow = 'auto'; // Enable scroll
+                    }
+
+                    function updateLightboxImage() {
+                        lightboxImg.src = lightboxImages[currentSlide];
+                    }
+
+                    function changeSlide(n) {
+                        currentSlide += n;
+                        if (currentSlide >= lightboxImages.length) currentSlide = 0;
+                        if (currentSlide < 0) currentSlide = lightboxImages.length - 1;
+                        updateLightboxImage();
+                    }
+
+                    // Event Listeners for Controls
+                    closeBtn.onclick = closeLightbox;
+                    prevBtn.onclick = (e) => { e.stopPropagation(); changeSlide(-1); };
+                    nextBtn.onclick = (e) => { e.stopPropagation(); changeSlide(1); };
+
+                    // Click outside to close
+                    lightbox.onclick = (e) => {
+                        if (e.target === lightbox) closeLightbox();
+                    }
+
+                    // Keyboard Nav
+                    document.addEventListener('keydown', (e) => {
+                        if (lightbox.style.display === 'block') {
+                            if (e.key === 'Escape') closeLightbox();
+                            if (e.key === 'ArrowLeft') changeSlide(-1);
+                            if (e.key === 'ArrowRight') changeSlide(1);
+                        }
+                    });
+
+                    // Build Gallery
+                    scooterImages.forEach((filename, index) => {
+                        const imgWrapper = document.createElement('div');
+                        imgWrapper.className = 'gallery-item';
+
+                        const img = document.createElement('img');
+                        img.src = `assets/${filename}`;
+                        img.alt = `Vintage Scooter Detail`;
+                        img.loading = "lazy";
+
+                        // Open Lightbox on click
+                        imgWrapper.onclick = () => openLightbox(index);
+
+                        imgWrapper.appendChild(img);
+                        grid.appendChild(imgWrapper);
+                    });
+                }
+
+                // Adventure Scooter Specific Logic
+                if (project.title === "Adventure Scooter") {
+                    const gallery = document.getElementById('projectGallery');
+                    const grid = document.getElementById('masonryGrid');
+                    gallery.style.display = 'block';
+
+                    // List of specific images found in assets
+                    const adventureImages = [
+                        "Adventure Scooter.jpeg",
+                        "Adventure Scooter 1.jpeg",
+                        "Adventure Scooter 2.jpeg",
+                        "Adventure Scooter 3.jpeg",
+                        "Adventure Scooter 4.jpeg"
+                    ];
+
+                    // Store full paths for lightbox
+                    const lightboxImages = adventureImages.map(img => `assets/${img}`);
+                    let currentSlide = 0;
+
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightboxImage');
+                    const closeBtn = document.getElementById('closeLightbox');
+                    const prevBtn = document.getElementById('prevSlide');
+                    const nextBtn = document.getElementById('nextSlide');
+
+                    // Re-use lightbox functions (copy-paste for now to ensure isolation, or refactor to shared if they were global)
+                    // Since they are inside the if block, we need to redefine or move them out. 
+                    // Refactoring to shared scope is better, but risky with replace. 
+                    // Let's copy-paste for safety in this specific task context, or better:
+                    // Move the lightbox logic OUTSIDE the specific project checks so it can be used by ANY project with a gallery.
+
+                    // Actually, the previous "Vintage Scooter" block has the lightbox functions defined INSIDE it. 
+                    // This means they are not accessible here. 
+                    // I should Refactor to move the Lightbox Logic OUT of the if blocks.
+
+                    // However, to keep it simple and less invasive for this specific request, I will duplicate the setup.
+                    // But wait, the `openLightbox` function needs to know which images to use.
+
+                    // Let's implement a shared setup.
+
+                    function setupGallery(images) {
+                        // Clear grid first? No, it's empty by default.
+
+                        const galleryImages = images.map(img => `assets/${img}`);
+                        let currentSlide = 0;
+
+                        function openLightbox(index) {
+                            currentSlide = index;
+                            updateLightboxImage();
+                            lightbox.style.display = 'block';
+                            document.body.style.overflow = 'hidden';
+                        }
+
+                        function closeLightbox() {
+                            lightbox.style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                        }
+
+                        function updateLightboxImage() {
+                            lightboxImg.src = galleryImages[currentSlide];
+                        }
+
+                        function changeSlide(n) {
+                            currentSlide += n;
+                            if (currentSlide >= galleryImages.length) currentSlide = 0;
+                            if (currentSlide < 0) currentSlide = galleryImages.length - 1;
+                            updateLightboxImage();
+                        }
+
+                        // Event Listeners
+                        closeBtn.onclick = closeLightbox;
+                        prevBtn.onclick = (e) => { e.stopPropagation(); changeSlide(-1); };
+                        nextBtn.onclick = (e) => { e.stopPropagation(); changeSlide(1); };
+                        lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); }
+                        document.addEventListener('keydown', (e) => {
+                            if (lightbox.style.display === 'block') {
+                                if (e.key === 'Escape') closeLightbox();
+                                if (e.key === 'ArrowLeft') changeSlide(-1);
+                                if (e.key === 'ArrowRight') changeSlide(1);
+                            }
+                        });
+
+                        images.forEach((filename, index) => {
+                            const imgWrapper = document.createElement('div');
+                            imgWrapper.className = 'gallery-item';
+                            const img = document.createElement('img');
+                            img.src = `assets/${filename}`;
+                            img.alt = `${project.title} Detail`;
+                            img.loading = "lazy";
+                            imgWrapper.onclick = () => openLightbox(index);
+                            imgWrapper.appendChild(img);
+                            grid.appendChild(imgWrapper);
+                        });
+                    }
+
+                    // But wait, I can't easily refactor the previous block without replacing it.
+                    // The previous block is for Vintage Scooter.
+                    // If I add this new block, it works for Adventure Scooter.
+                    // But the Vintage Scooter block also defines `lightbox`, `lightboxImg` etc via `document.getElementById`.
+                    // Scope is function-level (DOMContentLoaded), so `const lightbox` will conflict if I redeclare it.
+
+                    // Solution: Move the `const` declarations for UI elements to the top of DOMContentLoaded.
+                    // Then logic can use them.
+
+                    // Since I am only replacing the End of the Previous block, I have to be careful.
+                    // I will use a different variable name for the images list, and reuse the element IDs but NOT redeclare the consts if they are already in the top scope (which they are NOT, they are in the if block).
+                    // Actually, `const lightbox` in the `if` block is scoped to that block? No, `var` is function scoped, `const` is block scoped.
+                    // So inside `if (project.title === "Adventure Scooter")` I can redeclare `const lightbox`.
+
+                    // Yes, `if` block creates a new scope.
+
+                    setupGallery(adventureImages);
+
+                    // Show the Adventure Scooter features section
+                    document.getElementById('adventureScooterFeatures').style.display = 'block';
+
+
+                }
+
+                // GoKart Specific Logic
+                if (project.title === "GoKart") {
+                    const gallery = document.getElementById('projectGallery');
+                    const grid = document.getElementById('masonryGrid');
+                    gallery.style.display = 'block';
+
+                    // Show the technical description
+                    document.getElementById('gokartTechnicalDescription').style.display = 'block';
+
+                    // List of specific images found in assets
+                    const gokartImages = [
+                        "GoKart.png",
+                        "GoKart 1.PNG",
+                        "GoKart 2.jpeg",
+                        "GoKart 3.jpeg",
+                        "GoKart 4.jpeg",
+                        "GoKart 5.PNG",
+                        "GoKart 6.jpeg",
+                        "GoKart 7.jpeg"
+                    ];
+
+                    const gokartCaptions = {
+                        "GoKart 2.jpeg": "Process of self fabricating a steering wheel (center plate) from a metal plate"
+                    };
+
+                    // Store full paths for lightbox
+                    const lightboxImages = gokartImages.map(img => `assets/${img}`);
+                    let currentSlide = 0;
+
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightboxImage');
+                    const closeBtn = document.getElementById('closeLightbox');
+                    const prevBtn = document.getElementById('prevSlide');
+                    const nextBtn = document.getElementById('nextSlide');
+
+                    function openLightbox(index) {
+                        currentSlide = index;
+                        updateLightboxImage();
+                        lightbox.style.display = 'block';
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function closeLightbox() {
+                        lightbox.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+
+                    function updateLightboxImage() {
+                        lightboxImg.src = lightboxImages[currentSlide];
+                    }
+
+                    function changeSlide(n) {
+                        currentSlide += n;
+                        if (currentSlide >= lightboxImages.length) currentSlide = 0;
+                        if (currentSlide < 0) currentSlide = lightboxImages.length - 1;
+                        updateLightboxImage();
+                    }
+
+                    // Event Listeners
+                    closeBtn.onclick = closeLightbox;
+                    prevBtn.onclick = (e) => { e.stopPropagation(); changeSlide(-1); };
+                    nextBtn.onclick = (e) => { e.stopPropagation(); changeSlide(1); };
+                    lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); }
+                    document.addEventListener('keydown', (e) => {
+                        if (lightbox.style.display === 'block') {
+                            if (e.key === 'Escape') closeLightbox();
+                            if (e.key === 'ArrowLeft') changeSlide(-1);
+                            if (e.key === 'ArrowRight') changeSlide(1);
+                        }
+                    });
+
+                    gokartImages.forEach((filename, index) => {
+                        const imgWrapper = document.createElement('div');
+                        imgWrapper.className = 'gallery-item';
+                        imgWrapper.style.position = 'relative'; // Ensure caption is positioned correctly
+
+                        const img = document.createElement('img');
+                        img.src = `assets/${filename}`;
+                        img.alt = `${project.title} Detail`;
+                        img.loading = "lazy";
+                        imgWrapper.onclick = () => openLightbox(index);
+                        imgWrapper.appendChild(img);
+
+                        // Add caption if defined for this image
+                        if (gokartCaptions[filename]) {
+                            const caption = document.createElement('div');
+                            caption.style.position = 'absolute';
+                            caption.style.bottom = '0';
+                            caption.style.left = '0';
+                            caption.style.right = '0';
+                            caption.style.background = 'rgba(0, 0, 0, 0.7)';
+                            caption.style.color = 'white';
+                            caption.style.padding = '10px';
+                            caption.style.fontSize = '0.9rem';
+                            caption.style.textAlign = 'center';
+                            caption.style.fontFamily = 'var(--font-body)';
+                            caption.textContent = gokartCaptions[filename];
+                            imgWrapper.appendChild(caption);
+                        }
+
+                        grid.appendChild(imgWrapper);
+                    });
+                }
+
+                // Necklace Specific Logic (Video)
+                if (project.title === "Necklace") {
+                    const gallery = document.getElementById('projectGallery');
+                    const grid = document.getElementById('masonryGrid');
+                    gallery.style.display = 'block';
+
+                    grid.style.display = 'none'; // Hide grid
+
+                    // Add subtitle below the Gallery heading
+                    const subtitle = document.createElement('p');
+                    subtitle.textContent = 'A short product animation rendered using Keyshot';
+                    subtitle.style.textAlign = 'center';
+                    subtitle.style.fontSize = '1.1rem';
+                    subtitle.style.opacity = '0.7';
+                    subtitle.style.marginTop = '-1rem';
+                    subtitle.style.marginBottom = '2rem';
+                    subtitle.style.fontStyle = 'italic';
+                    gallery.insertBefore(subtitle, grid);
+
+                    const videoContainer = document.createElement('div');
+                    videoContainer.className = 'video-container';
+                    videoContainer.style.width = '100%';
+                    videoContainer.style.marginTop = '2rem';
+                    videoContainer.style.borderRadius = '8px';
+                    videoContainer.style.overflow = 'hidden';
+                    videoContainer.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    videoContainer.style.boxShadow = '0 20px 50px rgba(0,0,0,0.5)';
+
+                    const video = document.createElement('video');
+                    video.src = 'assets/necklace 1.MOV';
+                    video.controls = true;
+                    video.style.width = '100%';
+                    video.style.display = 'block';
+
+                    videoContainer.appendChild(video);
+                    gallery.appendChild(videoContainer);
+                }
+
+                // Solitaire Ring (Gallery)
+                if (project.title === "Solitaire Ring") {
+                    const gallery = document.getElementById('projectGallery');
+                    const grid = document.getElementById('masonryGrid');
+                    gallery.style.display = 'block';
+
+                    // List of specific images found in assets
+                    const ringImages = [
+                        "Solitaire Ring.jpeg", // Main image
+                        "ring 1.png",
+                        "ring 2.jpeg",
+                        "ring 3.jpeg"
+                    ];
+
+                    const lightboxImages = ringImages.map(img => `assets/${img}`);
+                    let currentSlide = 0;
+
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightboxImage');
+                    const closeBtn = document.getElementById('closeLightbox');
+                    const prevBtn = document.getElementById('prevSlide');
+                    const nextBtn = document.getElementById('nextSlide');
+
+                    function openLightbox(index) {
+                        currentSlide = index;
+                        updateLightboxImage();
+                        lightbox.style.display = 'block';
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function closeLightbox() {
+                        lightbox.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+
+                    function updateLightboxImage() {
+                        lightboxImg.src = lightboxImages[currentSlide];
+                    }
+
+                    function changeSlide(n) {
+                        currentSlide += n;
+                        if (currentSlide >= lightboxImages.length) currentSlide = 0;
+                        if (currentSlide < 0) currentSlide = lightboxImages.length - 1;
+                        updateLightboxImage();
+                    }
+
+                    // Event Listeners
+                    closeBtn.onclick = closeLightbox;
+                    prevBtn.onclick = (e) => { e.stopPropagation(); changeSlide(-1); };
+                    nextBtn.onclick = (e) => { e.stopPropagation(); changeSlide(1); };
+                    lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); }
+                    document.addEventListener('keydown', (e) => {
+                        if (lightbox.style.display === 'block') {
+                            if (e.key === 'Escape') closeLightbox();
+                            if (e.key === 'ArrowLeft') changeSlide(-1);
+                            if (e.key === 'ArrowRight') changeSlide(1);
+                        }
+                    });
+
+                    ringImages.forEach((filename, index) => {
+                        const imgWrapper = document.createElement('div');
+                        imgWrapper.className = 'gallery-item';
+                        const img = document.createElement('img');
+                        img.src = `assets/${filename}`;
+                        img.alt = `${project.title} Detail`;
+                        img.loading = "lazy";
+                        imgWrapper.onclick = () => openLightbox(index);
+                        imgWrapper.appendChild(img);
+                        grid.appendChild(imgWrapper);
+                    });
+                }
+
+                // Enduro Helmet Specific Logic
+                if (project.title === "Enduro Helmet") {
+                    const gallery = document.getElementById('projectGallery');
+                    const grid = document.getElementById('masonryGrid');
+                    gallery.style.display = 'block';
+
+                    const helmetImages = [
+                        "Enduro Helmet.jpeg",
+                        "Enduro Helmet 2.jpeg",
+                        "Enduro Helmet 3.jpeg",
+                        "Enduro Helmet 4.jpeg",
+                        "Enduro Helmet 5.PNG"
+                    ];
+
+                    const lightboxImages = helmetImages.map(img => `assets/${img}`);
+                    let currentSlide = 0;
+
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightboxImage');
+                    const closeBtn = document.getElementById('closeLightbox');
+                    const prevBtn = document.getElementById('prevSlide');
+                    const nextBtn = document.getElementById('nextSlide');
+
+                    function openLightbox(index) {
+                        currentSlide = index;
+                        updateLightboxImage();
+                        lightbox.style.display = 'block';
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function closeLightbox() {
+                        lightbox.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+
+                    function updateLightboxImage() {
+                        lightboxImg.src = lightboxImages[currentSlide];
+                    }
+
+                    function changeSlide(n) {
+                        currentSlide += n;
+                        if (currentSlide >= lightboxImages.length) currentSlide = 0;
+                        if (currentSlide < 0) currentSlide = lightboxImages.length - 1;
+                        updateLightboxImage();
+                    }
+
+                    // Event Listeners
+                    closeBtn.onclick = closeLightbox;
+                    prevBtn.onclick = (e) => { e.stopPropagation(); changeSlide(-1); };
+                    nextBtn.onclick = (e) => { e.stopPropagation(); changeSlide(1); };
+                    lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); }
+                    document.addEventListener('keydown', (e) => {
+                        if (lightbox.style.display === 'block') {
+                            if (e.key === 'Escape') closeLightbox();
+                            if (e.key === 'ArrowLeft') changeSlide(-1);
+                            if (e.key === 'ArrowRight') changeSlide(1);
+                        }
+                    });
+
+                    helmetImages.forEach((filename, index) => {
+                        const imgWrapper = document.createElement('div');
+                        imgWrapper.className = 'gallery-item';
+                        const img = document.createElement('img');
+                        img.src = `assets/${filename}`;
+                        img.alt = `${project.title} Detail`;
+                        img.loading = "lazy";
+                        imgWrapper.onclick = () => openLightbox(index);
+                        imgWrapper.appendChild(img);
+                        grid.appendChild(imgWrapper);
+                    });
+                }
+
+                // Arc Reactor Specific Logic
+                if (project.title === "Arc Reactor") {
+                    const gallery = document.getElementById('projectGallery');
+                    const grid = document.getElementById('masonryGrid');
+                    gallery.style.display = 'block';
+
+                    const arcReactorImages = [
+                        "Arc Reactor 1.jpeg",
+                        "Arc Reactor 2.jpeg",
+                        "Arc Reactor 3.PNG",
+                        "Arc Reactor 4.PNG"
+                    ];
+
+                    const lightboxImages = arcReactorImages.map(img => `assets/${img}`);
+                    let currentSlide = 0;
+
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightboxImage');
+                    const closeBtn = document.getElementById('closeLightbox');
+                    const prevBtn = document.getElementById('prevSlide');
+                    const nextBtn = document.getElementById('nextSlide');
+
+                    function openLightbox(index) {
+                        currentSlide = index;
+                        updateLightboxImage();
+                        lightbox.style.display = 'block';
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function closeLightbox() {
+                        lightbox.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+
+                    function updateLightboxImage() {
+                        lightboxImg.src = lightboxImages[currentSlide];
+                    }
+
+                    function changeSlide(n) {
+                        currentSlide += n;
+                        if (currentSlide >= lightboxImages.length) currentSlide = 0;
+                        if (currentSlide < 0) currentSlide = lightboxImages.length - 1;
+                        updateLightboxImage();
+                    }
+
+                    // Event Listeners
+                    closeBtn.onclick = closeLightbox;
+                    prevBtn.onclick = (e) => { e.stopPropagation(); changeSlide(-1); };
+                    nextBtn.onclick = (e) => { e.stopPropagation(); changeSlide(1); };
+                    lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); }
+                    document.addEventListener('keydown', (e) => {
+                        if (lightbox.style.display === 'block') {
+                            if (e.key === 'Escape') closeLightbox();
+                            if (e.key === 'ArrowLeft') changeSlide(-1);
+                            if (e.key === 'ArrowRight') changeSlide(1);
+                        }
+                    });
+
+                    arcReactorImages.forEach((filename, index) => {
+                        const imgWrapper = document.createElement('div');
+                        imgWrapper.className = 'gallery-item';
+                        const img = document.createElement('img');
+                        img.src = `assets/${filename}`;
+                        img.alt = `${project.title} Detail`;
+                        img.loading = "lazy";
+                        imgWrapper.onclick = () => openLightbox(index);
+                        imgWrapper.appendChild(img);
+                        grid.appendChild(imgWrapper);
+                    });
+                }
+
+                // Controller Specific Logic
+                if (project.title === "Controller") {
+                    const gallery = document.getElementById('projectGallery');
+                    const grid = document.getElementById('masonryGrid');
+                    gallery.style.display = 'block';
+
+                    const controllerImages = [
+                        "Controller.PNG",
+                        "Controller 1.PNG",
+                        "Controller 2.PNG",
+                        "Controller 3.jpeg",
+                        "Controller 4.jpeg",
+                        "Controller.jpeg"
+                    ];
+
+                    const lightboxImages = controllerImages.map(img => `assets/${img}`);
+                    let currentSlide = 0;
+
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightboxImage');
+                    const closeBtn = document.getElementById('closeLightbox');
+                    const prevBtn = document.getElementById('prevSlide');
+                    const nextBtn = document.getElementById('nextSlide');
+
+                    function openLightbox(index) {
+                        currentSlide = index;
+                        updateLightboxImage();
+                        lightbox.style.display = 'block';
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function closeLightbox() {
+                        lightbox.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+
+                    function updateLightboxImage() {
+                        lightboxImg.src = lightboxImages[currentSlide];
+                    }
+
+                    function changeSlide(n) {
+                        currentSlide += n;
+                        if (currentSlide >= lightboxImages.length) currentSlide = 0;
+                        if (currentSlide < 0) currentSlide = lightboxImages.length - 1;
+                        updateLightboxImage();
+                    }
+
+                    // Event Listeners
+                    closeBtn.onclick = closeLightbox;
+                    prevBtn.onclick = (e) => { e.stopPropagation(); changeSlide(-1); };
+                    nextBtn.onclick = (e) => { e.stopPropagation(); changeSlide(1); };
+                    lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); }
+                    document.addEventListener('keydown', (e) => {
+                        if (lightbox.style.display === 'block') {
+                            if (e.key === 'Escape') closeLightbox();
+                            if (e.key === 'ArrowLeft') changeSlide(-1);
+                            if (e.key === 'ArrowRight') changeSlide(1);
+                        }
+                    });
+
+                    controllerImages.forEach((filename, index) => {
+                        const imgWrapper = document.createElement('div');
+                        imgWrapper.className = 'gallery-item';
+                        const img = document.createElement('img');
+                        img.src = `assets/${filename}`;
+                        img.alt = `${project.title} Detail`;
+                        img.loading = "lazy";
+                        imgWrapper.onclick = () => openLightbox(index);
+                        imgWrapper.appendChild(img);
+                        grid.appendChild(imgWrapper);
+                    });
+                }
+
+            } else {
+                // Redirect or show error if invalid ID
+                document.querySelector('.detail-container').innerHTML = '<h2>Project not found.</h2><a href="index.html" class="back-btn">Return Home</a>';
+            }
+        });
+    </script>
+</body>
+
+</html>

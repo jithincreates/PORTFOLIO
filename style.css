@@ -1,0 +1,534 @@
+:root {
+    --bg-color: #050505;
+    --text-color: #ffffff;
+    --accent-color: #3b3b3b;
+    /* Subtle grey for now */
+    --highlight-color: #ffffff;
+
+    --font-display: 'Syncopate', sans-serif;
+    --font-body: 'Outfit', sans-serif;
+
+    --nav-height: 70px;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 3rem;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-color);
+    background: #000000;
+    color: #ffffff;
+    overflow-x: hidden;
+    line-height: 1.6;
+    position: relative;
+}
+
+/* Dynamic Gradient Overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse 80% 50% at var(--gradient-x, 50%) var(--gradient-y, 20%),
+            rgba(45, 45, 45, 0.95) 0%,
+            rgba(25, 25, 25, 0.75) 30%,
+            rgba(15, 15, 15, 0.55) 60%,
+            rgba(0, 0, 0, 0) 100%);
+    pointer-events: none;
+    z-index: 0;
+    transition: --gradient-x 0.3s ease, --gradient-y 0.3s ease;
+}
+
+/* Ensure content is above gradient */
+nav,
+section {
+    position: relative;
+    z-index: 1;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--highlight-color);
+}
+
+/* Scroll Animation Classes */
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+ul {
+    list-style: none;
+}
+
+/* Navigation */
+.fixed-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem 3rem;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    /* Changed to space-between if we had a logo, but here just left aligned */
+    align-items: center;
+    mix-blend-mode: difference;
+}
+
+.nav-links-left {
+    display: flex;
+    gap: 3rem;
+}
+
+.nav-item {
+    font-family: var(--font-body);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    opacity: 0.6;
+    position: relative;
+}
+
+.nav-item::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -5px;
+    left: 0;
+    background-color: var(--highlight-color);
+    transition: width 0.3s ease;
+}
+
+.nav-item:hover {
+    opacity: 1;
+}
+
+.nav-item:hover::after {
+    width: 100%;
+}
+
+.nav-item.highlight {
+    font-weight: 600;
+    opacity: 1;
+}
+
+/* Hero Section */
+.hero-section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 2rem;
+    position: relative;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    /* Increased gap */
+    z-index: 1;
+}
+
+.hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 9vw, 6rem);
+    /* Slightly larger max size */
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 2px;
+    /* Positive spacing for that ultra-wide feel */
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.hero-title {
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 1rem;
+    opacity: 0.7;
+    margin-bottom: 1.5rem;
+}
+
+.hero-description {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    opacity: 0.85;
+    font-weight: 300;
+    max-width: 700px;
+    margin: 0 auto 2rem auto;
+    text-align: center;
+}
+
+.cta-button {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: 1rem 2.5rem;
+    border: 1px solid var(--text-color);
+    border-radius: 50px;
+    /* Pill shape */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+.cta-button:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+    transform: translateY(-2px);
+}
+
+/* Sections Common */
+section {
+    padding: var(--spacing-lg) 2rem;
+    min-height: 50vh;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* Project Carousel Placeholder */
+/* Project Carousel */
+.projects-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 85vh;
+    /* Sufficient height */
+    display: flex;
+    flex-direction: column;
+    /* Stack track and nav vertically */
+    justify-content: center;
+    align-items: center;
+    /* Horizontally center the track and nav */
+    gap: 3rem;
+    /* Space between track and nav */
+}
+
+.carousel-track {
+    display: flex;
+    gap: 2rem;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+    align-self: flex-start;
+    /* Ensure track starts at left edge for correct JS math */
+    margin-left: 0;
+    /* Defensive reset */
+    padding-left: 0;
+    /* Defensive reset */
+    position: relative;
+    /* Make this the offsetParent for items */
+    left: 0;
+}
+
+.carousel-item {
+    min-width: 260px;
+    height: 380px;
+    background: #1a1a1a;
+    border-radius: 4px;
+    /* Minimal radius */
+    overflow: hidden;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    flex-shrink: 0;
+    border: 1px solid #333;
+}
+
+.project-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.project-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    opacity: 0.8;
+}
+
+.carousel-item.active {
+    border-color: var(--text-color);
+}
+
+.carousel-item.active .project-card img {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.carousel-nav {
+    position: relative;
+    /* Part of the flow now */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    z-index: 20;
+    pointer-events: none;
+    /* No bottom/padding needed, gap on container handles it */
+}
+
+.nav-btn {
+    pointer-events: auto;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
+    font-size: 1.5rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    flex-shrink: 0;
+    /* Prevent shrinking */
+}
+
+.nav-btn:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+    border-color: var(--text-color);
+}
+
+.project-info {
+    text-align: center;
+    width: 400px;
+    max-width: 80vw;
+    height: 120px;
+    /* Fixed height to prevent jumping */
+    transition: opacity 0.3s ease;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#projectTitle {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#projectCategory {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    opacity: 0.7;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+/* Skills */
+/* Skills */
+.skills-section {
+    background: #0a0a0a;
+    position: relative;
+    z-index: 2;
+}
+
+.skills-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.skill-category {
+    padding: 2rem;
+    width: 100%;
+    max-width: 1000px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    /* Subtle border */
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.skill-category:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.skill-category h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--highlight-color);
+    letter-spacing: 1px;
+}
+
+.skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.skill-list li {
+    font-size: 0.95rem;
+    padding: 0.7rem 1.8rem;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    cursor: default;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+.software-logo {
+    height: 18px;
+    width: auto;
+    object-fit: contain;
+    filter: grayscale(1) brightness(3);
+    opacity: 0.7;
+    transition: all 0.4s ease;
+}
+
+.skill-list li:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4),
+        0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+.skill-list li:hover .software-logo {
+    filter: grayscale(1) brightness(5);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* About Section */
+.about-section {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-text {
+    font-size: 1.5rem;
+    font-weight: 300;
+    line-height: 1.8;
+    opacity: 0.9;
+}
+
+
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    opacity: 0.4;
+    font-size: 0.8rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .fixed-nav {
+        padding: 1.5rem;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+    }
+
+    .nav-links-left {
+        gap: 1rem;
+    }
+
+    .nav-item {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+    }
+
+    .hero-name {
+        font-size: clamp(2.5rem, 15vw, 5rem);
+    }
+
+    .hero-title {
+        font-size: 0.9rem;
+    }
+
+    .carousel-container {
+        height: 50vh;
+    }
+
+    .carousel-item {
+        min-width: 220px;
+        height: 320px;
+    }
+
+    .nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .about-text {
+        font-size: 1.1rem;
+        padding: 0 1rem;
+    }
+}
