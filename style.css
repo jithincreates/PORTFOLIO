@@ -464,7 +464,7 @@ section {
 }
 
 .skill-list li:hover .software-logo {
-    filter: grayscale(1) brightness(5);
+    filter: grayscale(0) brightness(1);
     opacity: 1;
     transform: scale(1.1);
 }
