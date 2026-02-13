@@ -196,13 +196,24 @@
             };
 
             // Create mailto link with form data
-            const mailtoLink = `mailto:your-email@example.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+            const recipient = 'jithincreates@gmail.com';
+            const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`;
+            const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(body)}`;
 
-            // Open mailto link
+            // Open mailto client
             window.location.href = mailtoLink;
 
-            // Reset form
-            this.reset();
+            // Optional: Show a brief feedback message
+            const submitBtn = this.querySelector('.form-submit');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Opening Mail Client...';
+            submitBtn.style.opacity = '0.7';
+
+            setTimeout(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.style.opacity = '1';
+                this.reset();
+            }, 1000);
         });
     </script>
 
