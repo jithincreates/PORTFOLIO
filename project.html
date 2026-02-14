@@ -451,31 +451,13 @@
 
                 <div class="project-description-container">
                     <p class="detail-description" id="detailDescription">
-                        Detailed description of the project goes here. This section will elaborate on the design
-                        challenges,
-                        engineering solutions, and manufacturing processes involved in bringing this concept to reality.
-                        It demonstrates technical proficiency and creative problem-solving.
                     </p>
                 </div>
 
                 <a href="index.html" class="back-btn">&larr; Back to Portfolio</a>
             </div>
         </div>
-        <!-- GoKart Technical Description Section -->
-        <div id="gokartTechnicalDescription" class="tech-section" style="display: none;">
-            <p class="detail-description" style="margin: 0;">
-                This two-month comprehensive restoration involved a complete teardown to the chassis for structural
-                evaluation and component overhaul. I engineered and fabricated several bespoke components, including the
-                steering assembly, pedal interface, engine mounts, and a custom brake caliper bracket. To ensure
-                structural integrity, I remediated chassis corrosion by stripping surface rust and reinforcing critical
-                weld points.
-                <br><br>
-                The mechanical system was optimized by correcting front-end toe-in alignment and integrating a
-                high-performance braking system adapted from a Bajaj Pulsar. The build was finalized with a protective
-                industrial coating to prevent future oxidation and is powered by a Briggs & Stratton 950 Series (208cc)
-                engine.
-            </p>
-        </div>
+
 
         <!-- Dynamic Gallery Section -->
         <div id="projectGallery" class="gallery-container" style="display: none;">
@@ -826,9 +808,6 @@
                     const grid = document.getElementById('masonryGrid');
                     gallery.style.display = 'block';
 
-                    // Show the technical description
-                    document.getElementById('gokartTechnicalDescription').style.display = 'block';
-
                     // List of specific images found in assets
                     const gokartImages = [
                         "GoKart.png",
@@ -924,17 +903,78 @@
                     });
                 }
 
-                // Necklace Specific Logic (Video)
+                // Necklace Specific Logic
                 if (project.title === "Necklace") {
                     const gallery = document.getElementById('projectGallery');
                     const grid = document.getElementById('masonryGrid');
                     gallery.style.display = 'block';
 
-                    grid.style.display = 'none'; // Hide grid
+                    // List of specific images found in assets
+                    const necklaceImages = [
+                        "Necklace.PNG",
+                        "Neclace 2.png"
+                    ];
+
+                    const lightboxImages = necklaceImages.map(img => `assets/${img}`);
+                    let currentSlide = 0;
+
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightboxImage');
+                    const closeBtn = document.getElementById('closeLightbox');
+                    const prevBtn = document.getElementById('prevSlide');
+                    const nextBtn = document.getElementById('nextSlide');
+
+                    function openLightbox(index) {
+                        currentSlide = index;
+                        updateLightboxImage();
+                        lightbox.style.display = 'block';
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function closeLightbox() {
+                        lightbox.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+
+                    function updateLightboxImage() {
+                        lightboxImg.src = lightboxImages[currentSlide];
+                    }
+
+                    function changeSlide(n) {
+                        currentSlide += n;
+                        if (currentSlide >= lightboxImages.length) currentSlide = 0;
+                        if (currentSlide < 0) currentSlide = necklaceImages.length - 1;
+                        updateLightboxImage();
+                    }
+
+                    // Event Listeners
+                    closeBtn.onclick = closeLightbox;
+                    prevBtn.onclick = (e) => { e.stopPropagation(); changeSlide(-1); };
+                    nextBtn.onclick = (e) => { e.stopPropagation(); changeSlide(1); };
+                    lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); }
+                    document.addEventListener('keydown', (e) => {
+                        if (lightbox.style.display === 'block') {
+                            if (e.key === 'Escape') closeLightbox();
+                            if (e.key === 'ArrowLeft') changeSlide(-1);
+                            if (e.key === 'ArrowRight') changeSlide(1);
+                        }
+                    });
+
+                    necklaceImages.forEach((filename, index) => {
+                        const imgWrapper = document.createElement('div');
+                        imgWrapper.className = 'gallery-item';
+                        const img = document.createElement('img');
+                        img.src = `assets/${filename}`;
+                        img.alt = `${project.title} Detail`;
+                        img.loading = "lazy";
+                        imgWrapper.onclick = () => openLightbox(index);
+                        imgWrapper.appendChild(img);
+                        grid.appendChild(imgWrapper);
+                    });
 
                     // Add subtitle below the Gallery heading
                     const subtitle = document.createElement('p');
-                    subtitle.textContent = 'A short product animation rendered using Keyshot';
+                    subtitle.textContent = 'Product images and animations rendered using Keyshot';
                     subtitle.style.textAlign = 'center';
                     subtitle.style.fontSize = '1.1rem';
                     subtitle.style.opacity = '0.7';
@@ -943,23 +983,35 @@
                     subtitle.style.fontStyle = 'italic';
                     gallery.insertBefore(subtitle, grid);
 
-                    const videoContainer = document.createElement('div');
-                    videoContainer.className = 'video-container';
-                    videoContainer.style.width = '100%';
-                    videoContainer.style.marginTop = '2rem';
-                    videoContainer.style.borderRadius = '8px';
-                    videoContainer.style.overflow = 'hidden';
-                    videoContainer.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-                    videoContainer.style.boxShadow = '0 20px 50px rgba(0,0,0,0.5)';
+                    // Add Video Section
+                    const videoTitle = document.createElement('h3');
+                    videoTitle.textContent = 'Animations';
+                    videoTitle.style.fontFamily = 'var(--font-display)';
+                    videoTitle.style.textAlign = 'center';
+                    videoTitle.style.marginTop = '4rem';
+                    videoTitle.style.letterSpacing = '2px';
+                    gallery.appendChild(videoTitle);
 
-                    const video = document.createElement('video');
-                    video.src = 'assets/necklace 1.MOV';
-                    video.controls = true;
-                    video.style.width = '100%';
-                    video.style.display = 'block';
+                    const videos = ['necklace.MOV', 'necklace 1.MOV'];
+                    videos.forEach(videoSrc => {
+                        const videoContainer = document.createElement('div');
+                        videoContainer.className = 'video-container';
+                        videoContainer.style.width = '100%';
+                        videoContainer.style.marginTop = '2rem';
+                        videoContainer.style.borderRadius = '8px';
+                        videoContainer.style.overflow = 'hidden';
+                        videoContainer.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                        videoContainer.style.boxShadow = '0 20px 50px rgba(0,0,0,0.5)';
 
-                    videoContainer.appendChild(video);
-                    gallery.appendChild(videoContainer);
+                        const video = document.createElement('video');
+                        video.src = `assets/${videoSrc}`;
+                        video.controls = true;
+                        video.style.width = '100%';
+                        video.style.display = 'block';
+
+                        videoContainer.appendChild(video);
+                        gallery.appendChild(videoContainer);
+                    });
                 }
 
                 // Solitaire Ring (Gallery)
@@ -1175,6 +1227,109 @@
                         imgWrapper.appendChild(img);
                         grid.appendChild(imgWrapper);
                     });
+                }
+
+                // V6 Engine Specific Logic
+                if (project.title === "V6 Engine") {
+                    const gallery = document.getElementById('projectGallery');
+                    const grid = document.getElementById('masonryGrid');
+                    gallery.style.display = 'block';
+
+                    const engineImages = [
+                        "v6 1.png",
+                        "v6 2.png"
+                    ];
+
+                    const lightboxImages = engineImages.map(img => `assets/${img}`);
+                    let currentSlide = 0;
+
+                    const lightbox = document.getElementById('lightbox');
+                    const lightboxImg = document.getElementById('lightboxImage');
+                    const closeBtn = document.getElementById('closeLightbox');
+                    const prevBtn = document.getElementById('prevSlide');
+                    const nextBtn = document.getElementById('nextSlide');
+
+                    function openLightbox(index) {
+                        currentSlide = index;
+                        updateLightboxImage();
+                        lightbox.style.display = 'block';
+                        document.body.style.overflow = 'hidden';
+                    }
+
+                    function closeLightbox() {
+                        lightbox.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+
+                    function updateLightboxImage() {
+                        lightboxImg.src = lightboxImages[currentSlide];
+                    }
+
+                    function changeSlide(n) {
+                        currentSlide += n;
+                        if (currentSlide >= lightboxImages.length) currentSlide = 0;
+                        if (currentSlide < 0) currentSlide = engineImages.length - 1;
+                        updateLightboxImage();
+                    }
+
+                    // Event Listeners
+                    closeBtn.onclick = closeLightbox;
+                    prevBtn.onclick = (e) => { e.stopPropagation(); changeSlide(-1); };
+                    nextBtn.onclick = (e) => { e.stopPropagation(); changeSlide(1); };
+                    lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); }
+                    document.addEventListener('keydown', (e) => {
+                        if (lightbox.style.display === 'block') {
+                            if (e.key === 'Escape') closeLightbox();
+                            if (e.key === 'ArrowLeft') changeSlide(-1);
+                            if (e.key === 'ArrowRight') changeSlide(1);
+                        }
+                    });
+
+                    // Build Gallery (Side-by-side)
+                    grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                    grid.style.gridAutoRows = 'auto';
+
+                    engineImages.forEach((filename, index) => {
+                        const imgWrapper = document.createElement('div');
+                        imgWrapper.className = 'gallery-item';
+                        imgWrapper.style.gridColumn = 'span 1';
+                        imgWrapper.style.gridRow = 'span 1';
+
+                        const img = document.createElement('img');
+                        img.src = `assets/${filename}`;
+                        img.alt = `${project.title} Detail`;
+                        img.loading = "lazy";
+                        imgWrapper.onclick = () => openLightbox(index);
+                        imgWrapper.appendChild(img);
+                        grid.appendChild(imgWrapper);
+                    });
+
+                    // Add Video Section
+                    const videoTitle = document.createElement('h3');
+                    videoTitle.textContent = 'Engine Animation';
+                    videoTitle.style.fontFamily = 'var(--font-display)';
+                    videoTitle.style.textAlign = 'center';
+                    videoTitle.style.marginTop = '4rem';
+                    videoTitle.style.letterSpacing = '2px';
+                    gallery.appendChild(videoTitle);
+
+                    const videoContainer = document.createElement('div');
+                    videoContainer.className = 'video-container';
+                    videoContainer.style.width = '100%';
+                    videoContainer.style.marginTop = '2rem';
+                    videoContainer.style.borderRadius = '8px';
+                    videoContainer.style.overflow = 'hidden';
+                    videoContainer.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    videoContainer.style.boxShadow = '0 20px 50px rgba(0,0,0,0.5)';
+
+                    const video = document.createElement('video');
+                    video.src = 'assets/v6 engine video.mp4';
+                    video.controls = true;
+                    video.style.width = '100%';
+                    video.style.display = 'block';
+
+                    videoContainer.appendChild(video);
+                    gallery.appendChild(videoContainer);
                 }
 
                 // Controller Specific Logic
