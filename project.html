@@ -960,13 +960,25 @@
                         }
                     });
 
+                    // Custom Layout for Necklace: Necklace (Left, Small) & Necklace 2 (Right, Large)
+                    grid.style.display = 'grid';
+                    grid.style.gridTemplateColumns = '0.8fr 1.2fr'; // Necklace 2 takes more space
+                    grid.style.gridAutoRows = 'auto';
+                    grid.style.alignItems = 'stretch';
+                    grid.style.gap = '20px';
+
                     necklaceImages.forEach((filename, index) => {
                         const imgWrapper = document.createElement('div');
                         imgWrapper.className = 'gallery-item';
+                        imgWrapper.style.height = '100%';
+
                         const img = document.createElement('img');
                         img.src = `assets/${filename}`;
                         img.alt = `${project.title} Detail`;
                         img.loading = "lazy";
+                        img.style.height = '100%';
+                        img.style.objectFit = 'cover';
+
                         imgWrapper.onclick = () => openLightbox(index);
                         imgWrapper.appendChild(img);
                         grid.appendChild(imgWrapper);
@@ -974,7 +986,7 @@
 
                     // Add subtitle below the Gallery heading
                     const subtitle = document.createElement('p');
-                    subtitle.textContent = 'Product images and animations rendered using Keyshot';
+                    subtitle.textContent = 'Product images and animation rendered using Keyshot';
                     subtitle.style.textAlign = 'center';
                     subtitle.style.fontSize = '1.1rem';
                     subtitle.style.opacity = '0.7';
@@ -985,33 +997,30 @@
 
                     // Add Video Section
                     const videoTitle = document.createElement('h3');
-                    videoTitle.textContent = 'Animations';
+                    videoTitle.textContent = 'Animation';
                     videoTitle.style.fontFamily = 'var(--font-display)';
                     videoTitle.style.textAlign = 'center';
                     videoTitle.style.marginTop = '4rem';
                     videoTitle.style.letterSpacing = '2px';
                     gallery.appendChild(videoTitle);
 
-                    const videos = ['necklace.MOV', 'necklace 1.MOV'];
-                    videos.forEach(videoSrc => {
-                        const videoContainer = document.createElement('div');
-                        videoContainer.className = 'video-container';
-                        videoContainer.style.width = '100%';
-                        videoContainer.style.marginTop = '2rem';
-                        videoContainer.style.borderRadius = '8px';
-                        videoContainer.style.overflow = 'hidden';
-                        videoContainer.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-                        videoContainer.style.boxShadow = '0 20px 50px rgba(0,0,0,0.5)';
+                    const videoContainer = document.createElement('div');
+                    videoContainer.className = 'video-container';
+                    videoContainer.style.width = '100%';
+                    videoContainer.style.marginTop = '2rem';
+                    videoContainer.style.borderRadius = '8px';
+                    videoContainer.style.overflow = 'hidden';
+                    videoContainer.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    videoContainer.style.boxShadow = '0 20px 50px rgba(0,0,0,0.5)';
 
-                        const video = document.createElement('video');
-                        video.src = `assets/${videoSrc}`;
-                        video.controls = true;
-                        video.style.width = '100%';
-                        video.style.display = 'block';
+                    const video = document.createElement('video');
+                    video.src = 'assets/necklace 1.MOV';
+                    video.controls = true;
+                    video.style.width = '100%';
+                    video.style.display = 'block';
 
-                        videoContainer.appendChild(video);
-                        gallery.appendChild(videoContainer);
-                    });
+                    videoContainer.appendChild(video);
+                    gallery.appendChild(videoContainer);
                 }
 
                 // Solitaire Ring (Gallery)
