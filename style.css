@@ -246,8 +246,8 @@ section {
     justify-content: center;
     align-items: center;
     /* Horizontally center the track and nav */
-    gap: 3rem;
-    /* Space between track and nav */
+    gap: 5rem;
+    /* Increased space between track and nav to accommodate scaled items */
 }
 
 .carousel-track {

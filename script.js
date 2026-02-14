@@ -175,9 +175,10 @@ function updateInfo() {
 }
 
 function startAutoScroll() {
+    clearInterval(autoScrollInterval); // Safety: clear any existing interval
     autoScrollInterval = setInterval(() => {
         updateCarousel(activeIndex + 1);
-    }, 3000);
+    }, 4000); // 4s for more consistent reading time
 }
 
 function resetAutoScroll() {
@@ -201,6 +202,7 @@ if (carouselContainer) {
     });
 
     carouselContainer.addEventListener('mouseleave', () => {
+        // Only start if not already running (though startAutoScroll clears it anyway)
         startAutoScroll();
     });
 }
