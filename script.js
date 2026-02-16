@@ -50,27 +50,47 @@ const projectTitle = document.getElementById('projectTitle');
 const projectCategory = document.getElementById('projectCategory');
 const carouselContainer = document.querySelector('.carousel-container');
 
-let activeIndex = 0;
+let activeIndex = 0; // index within the projects array
 let autoScrollInterval;
+let isTransitioning = false;
+
+// Triple Buffer Strategy: [Set A (Clones)] [Set B (Real)] [Set C (Clones)]
+// This ensures that when we are at the ends of Set B, we still see full sets on both sides.
 
 function initCarousel() {
     if (!track) return;
 
-    // Clear existing
     track.innerHTML = '';
 
-    projects.forEach((project, index) => {
+    // Create triple buffer
+    const tripleProjects = [
+        ...projects.map((p, i) => ({ ...p, originalIndex: i })), // Set A
+        ...projects.map((p, i) => ({ ...p, originalIndex: i })), // Set B (Real)
+        ...projects.map((p, i) => ({ ...p, originalIndex: i }))  // Set C
+    ];
+
+    tripleProjects.forEach((project, index) => {
         const item = document.createElement('div');
         item.classList.add('carousel-item');
-        if (index === activeIndex) item.classList.add('active');
 
-        // Add click event to make it active if clicked, or navigate if already active
+        // Initial active: start of Set B
+        if (index === projects.length) item.classList.add('active');
+
         item.addEventListener('click', () => {
-            if (index === activeIndex) {
-                // Navigate to detail page
-                window.location.href = `project.html?id=${index}`;
+            if (isTransitioning) return;
+
+            // If they clicked the active one (in Set B or clones)
+            // we calculate if they clicked the 'active' one by checking proximity
+            // relative to our current activeIndex in the middle set
+            const trackIndex = index;
+            const currentActiveTrackIndex = activeIndex + projects.length;
+
+            if (trackIndex === currentActiveTrackIndex) {
+                window.location.href = `project.html?id=${project.originalIndex}`;
             } else {
-                updateCarousel(index);
+                // Determine which direction to move to reach this original project
+                // For simplicity, just jump to it relative to current set
+                updateCarousel(project.originalIndex);
                 resetAutoScroll();
             }
         });
@@ -85,66 +105,89 @@ function initCarousel() {
         track.appendChild(item);
     });
 
+    activeIndex = 0;
+    track.style.transition = 'none';
     updateInfo();
+    setTimeout(() => {
+        centerActiveItem(false);
+        track.style.transition = '';
+    }, 50);
 }
 
 function updateCarousel(newIndex) {
-    if (newIndex < 0) newIndex = projects.length - 1;
-    if (newIndex >= projects.length) newIndex = 0;
+    if (isTransitioning) return;
+
+    // We allow newIndex to go out of bounds (e.g., -1 or projects.length)
+    // to trigger the animation into the clones (Set A or Set C)
 
     activeIndex = newIndex;
+    isTransitioning = true;
 
-    // Update active class
-    const items = document.querySelectorAll('.carousel-item');
-    items.forEach((item, index) => {
-        item.classList.remove('active');
-        item.classList.remove('prev');
-        item.classList.remove('next');
-
-        // Calculate style transform based on distance from active
-        // This is where we create the "character selection" scrolling effect
-        // We want the active one centered, and others offset
-
-        const offset = index - activeIndex;
-        // Basic class assignment for CSS styling
-        if (index === activeIndex) {
-            item.classList.add('active');
-        } else if (index === activeIndex - 1 || (activeIndex === 0 && index === projects.length - 1)) {
-            // item.classList.add('prev');
-        } else if (index === activeIndex + 1 || (activeIndex === projects.length - 1 && index === 0)) {
-            // item.classList.add('next');
-        }
-    });
-
-    // Re-render transforms or scroll position
-    // For a centered carousel, we can translate the track
-    centerActiveItem();
+    centerActiveItem(true);
     updateInfo();
+
+    // After transition, sync back to the middle set (Set B)
+    setTimeout(() => {
+        checkWrapAround();
+        isTransitioning = false;
+    }, 500);
 }
 
-function centerActiveItem() {
+function checkWrapAround() {
+    let jumped = false;
+    if (activeIndex < 0) {
+        // Jump from Set A back to corresponding item in Set B
+        activeIndex = projects.length + activeIndex;
+        jumped = true;
+    } else if (activeIndex >= projects.length) {
+        // Jump from Set C back to corresponding item in Set B
+        activeIndex = activeIndex - projects.length;
+        jumped = true;
+    }
+
+    if (jumped) {
+        // Suppress track transition
+        track.style.transition = 'none';
+
+        // Suppress item transitions to prevent "zoom" glitch
+        const items = document.querySelectorAll('.carousel-item');
+        items.forEach(itm => itm.style.transition = 'none');
+
+        centerActiveItem(false);
+
+        track.offsetHeight; // Force reflow
+
+        // Restore transitions
+        track.style.transition = '';
+        items.forEach(itm => itm.style.transition = '');
+    }
+}
+
+function centerActiveItem(animate = true) {
     const items = document.querySelectorAll('.carousel-item');
     if (!items.length) return;
 
-    // Get the active item
-    const activeItem = items[activeIndex];
+    // The item we want centered is in the middle set (Set B) 
+    // or slightly outside if animating towards clones
+    const trackIndex = activeIndex + projects.length;
+    const activeItem = items[trackIndex];
 
-    // Calculate dimensions based on offsetParent (should be the track now)
-    // item.offsetLeft is the distance from the left edge of the track to the left edge of the item
+    if (!activeItem) return;
+
     const itemCenter = activeItem.offsetLeft + (activeItem.offsetWidth / 2);
-
     const containerWidth = track.parentElement.offsetWidth;
     const containerCenter = containerWidth / 2;
-
-    // We want the Item Center to be at Container Center
-    // Track Position = ContainerCenter - ItemCenter
     const trackPosition = containerCenter - itemCenter;
 
+    if (!animate) track.style.transition = 'none';
     track.style.transform = `translateX(${trackPosition}px)`;
+    if (!animate) {
+        track.offsetHeight;
+        track.style.transition = '';
+    }
 
-    // Update visual styles (scaling)
     items.forEach((itm, index) => {
-        let distance = Math.abs(index - activeIndex);
+        let distance = Math.abs(index - trackIndex);
 
         if (distance === 0) {
             itm.classList.add('active');
@@ -163,22 +206,27 @@ function centerActiveItem() {
 }
 
 function updateInfo() {
-    // Fade out text, update, fade in
     const infoContainer = document.getElementById('activeProjectInfo');
+    if (!infoContainer) return;
+
     infoContainer.style.opacity = '0';
 
     setTimeout(() => {
-        projectTitle.textContent = projects[activeIndex].title;
-        projectCategory.textContent = projects[activeIndex].category;
+        // Keep display logic simple using wrap
+        const displayIndex = (activeIndex + projects.length) % projects.length;
+        projectTitle.textContent = projects[displayIndex].title;
+        projectCategory.textContent = projects[displayIndex].category;
         infoContainer.style.opacity = '1';
     }, 300);
 }
 
 function startAutoScroll() {
-    clearInterval(autoScrollInterval); // Safety: clear any existing interval
+    clearInterval(autoScrollInterval);
     autoScrollInterval = setInterval(() => {
-        updateCarousel(activeIndex + 1);
-    }, 4000); // 4s for more consistent reading time
+        if (!isTransitioning) {
+            updateCarousel(activeIndex + 1);
+        }
+    }, 4000);
 }
 
 function resetAutoScroll() {
@@ -187,11 +235,13 @@ function resetAutoScroll() {
 }
 
 prevBtn.addEventListener('click', () => {
+    if (isTransitioning) return;
     updateCarousel(activeIndex - 1);
     resetAutoScroll();
 });
 
 nextBtn.addEventListener('click', () => {
+    if (isTransitioning) return;
     updateCarousel(activeIndex + 1);
     resetAutoScroll();
 });
@@ -202,11 +252,11 @@ if (carouselContainer) {
     });
 
     carouselContainer.addEventListener('mouseleave', () => {
-        // Only start if not already running (though startAutoScroll clears it anyway)
         startAutoScroll();
     });
 }
-window.addEventListener('resize', centerActiveItem);
+
+window.addEventListener('resize', () => centerActiveItem(false));
 
 document.addEventListener('DOMContentLoaded', () => {
     // Check if returning from a project page
@@ -221,9 +271,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initCarousel();
     startAutoScroll();
 
-    // Use a timeout to ensure layout is done before centering
-    setTimeout(centerActiveItem, 100);
-
     // Scroll to project section if returning from a detail page
     if (!isNaN(projectIndex)) {
         setTimeout(() => {
@@ -231,6 +278,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (projectsSection) {
                 projectsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
-        }, 300); // Slightly more delay for stability
+        }, 300);
     }
 });

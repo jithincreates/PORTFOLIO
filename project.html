@@ -1253,6 +1253,7 @@
 
                     const engineImages = [
                         "v6 1.png",
+                        "v6 1.5.png",
                         "v6 2.png"
                     ];
 
@@ -1301,8 +1302,8 @@
                         }
                     });
 
-                    // Build Gallery (Side-by-side)
-                    grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                    // Build Gallery (3 images in a row)
+                    grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
                     grid.style.gridAutoRows = 'auto';
 
                     engineImages.forEach((filename, index) => {
