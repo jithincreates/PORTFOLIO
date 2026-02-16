@@ -7,6 +7,7 @@
 
     --font-display: 'Syncopate', sans-serif;
     --font-body: 'Outfit', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
 
     --nav-height: 70px;
     --spacing-md: 1.5rem;
@@ -172,12 +173,12 @@ ul {
 }
 
 .hero-title {
-    font-family: var(--font-body);
+    font-family: var(--font-mono);
     text-transform: uppercase;
-    letter-spacing: 4px;
-    font-size: 1rem;
-    opacity: 0.7;
-    margin-bottom: 1.5rem;
+    letter-spacing: 12px;
+    font-size: 0.9rem;
+    opacity: 0.6;
+    margin-bottom: 2rem;
 }
 
 .hero-description {
